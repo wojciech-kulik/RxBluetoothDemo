@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     let pairingFlow = PairingFlow()
     var pairing: Disposable?
     
-    @IBAction func buttonClicked(_ sender: Any) {
+    @IBAction func pairClicked() {
         self.pairing?.dispose()
         self.pairing = self.pairingFlow.pair()
             .debug("vc")
@@ -26,5 +26,11 @@ class ViewController: UIViewController {
             .filter { !$0.isCompleted }
             .map { $0.error != nil ? "Error: \($0.error!)" : "Status: \($0.element!)" }
             .bind(to: self.statusLabel.rx.text)
+    }
+    
+    @IBAction func cancelClicked() {
+        self.pairing?.dispose()
+        self.pairing = nil
+        self.statusLabel.text = "Status: none"
     }
 }
